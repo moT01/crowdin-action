@@ -19,14 +19,13 @@ export const commitChanges = async (
   submodule?: string
 ) => {
   const asyncExec = promisify(exec);
-  if (submodule) {
-    await asyncExec(`cd ${submodule}`);
-  }
+  const options = submodule ? { cwd: submodule } : {};
+
   await asyncExec(`git config --global user.name ${username}`);
   await asyncExec(`git config --global user.email ${email}`);
-  await asyncExec(`git checkout -b ${branchName}`);
-  await asyncExec("git add .");
-  await asyncExec("git reset crowdin-config.yml");
-  await asyncExec(`git commit -m "${commitMessage}"`);
-  await asyncExec(`git push -u origin ${branchName} -f`);
+  await asyncExec(`git checkout -b ${branchName}`, options);
+  await asyncExec("git add .", options);
+  await asyncExec("git reset crowdin-config.yml", options);
+  await asyncExec(`git commit -m "${commitMessage}"`, options);
+  await asyncExec(`git push -u origin ${branchName} -f`, options);
 };
