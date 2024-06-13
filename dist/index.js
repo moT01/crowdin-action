@@ -40101,7 +40101,7 @@ const validate_environment_1 = __nccwpck_require__(1246);
                 (0, core_1.setFailed)("Missing commit configuration data.");
                 break;
             }
-            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME || "camperbot", process.env.GH_EMAIL || "camperbot@users.noreply.github.com", process.env.GH_BRANCH, process.env.GH_MESSAGE);
+            yield (0, commit_changes_1.commitChanges)(process.env.GH_USERNAME || "camperbot", process.env.GH_EMAIL || "camperbot@users.noreply.github.com", process.env.GH_BRANCH, process.env.GH_MESSAGE, process.env.SUBMODULE);
             break;
         case "convert-chinese":
             if (!process.env.FILE_PATHS) {
@@ -40231,9 +40231,13 @@ const util_1 = __nccwpck_require__(3837);
  * @param {string} email The GitHub email to commit from.
  * @param {string} branchName The name of the branch to commit to.
  * @param {string} commitMessage The commit message to use.
+ * @param {string} submodule Optional, the submodule to commit changes to.
  */
-const commitChanges = (username, email, branchName, commitMessage) => __awaiter(void 0, void 0, void 0, function* () {
+const commitChanges = (username, email, branchName, commitMessage, submodule) => __awaiter(void 0, void 0, void 0, function* () {
     const asyncExec = (0, util_1.promisify)(child_process_1.exec);
+    if (submodule) {
+        yield asyncExec(`cd ${submodule}`);
+    }
     yield asyncExec(`git config --global user.name ${username}`);
     yield asyncExec(`git config --global user.email ${email}`);
     yield asyncExec(`git checkout -b ${branchName}`);
