@@ -40235,16 +40235,14 @@ const util_1 = __nccwpck_require__(3837);
  */
 const commitChanges = (username, email, branchName, commitMessage, submodule) => __awaiter(void 0, void 0, void 0, function* () {
     const asyncExec = (0, util_1.promisify)(child_process_1.exec);
-    if (submodule) {
-        yield asyncExec(`cd ${submodule}`);
-    }
+    const options = submodule ? { cwd: submodule } : {};
     yield asyncExec(`git config --global user.name ${username}`);
     yield asyncExec(`git config --global user.email ${email}`);
-    yield asyncExec(`git checkout -b ${branchName}`);
-    yield asyncExec("git add .");
-    yield asyncExec("git reset crowdin-config.yml");
-    yield asyncExec(`git commit -m "${commitMessage}"`);
-    yield asyncExec(`git push -u origin ${branchName} -f`);
+    yield asyncExec(`git checkout -b ${branchName}`, options);
+    yield asyncExec("git add .", options);
+    yield asyncExec("git reset crowdin-config.yml", options);
+    yield asyncExec(`git commit -m "${commitMessage}"`, options);
+    yield asyncExec(`git push -u origin ${branchName} -f`, options);
 });
 exports.commitChanges = commitChanges;
 
