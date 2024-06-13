@@ -48,7 +48,8 @@ import { validateEnvironment } from "./utils/validate-environment";
         process.env.GH_USERNAME || "camperbot",
         process.env.GH_EMAIL || "camperbot@users.noreply.github.com",
         process.env.GH_BRANCH,
-        process.env.GH_MESSAGE
+        process.env.GH_MESSAGE,
+        process.env.SUBMODULE
       );
       break;
     case "convert-chinese":

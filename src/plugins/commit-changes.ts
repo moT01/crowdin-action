@@ -9,14 +9,19 @@ import { promisify } from "util";
  * @param {string} email The GitHub email to commit from.
  * @param {string} branchName The name of the branch to commit to.
  * @param {string} commitMessage The commit message to use.
+ * @param {string} submodule Optional, the submodule to commit changes to.
  */
 export const commitChanges = async (
   username: string,
   email: string,
   branchName: string,
-  commitMessage: string
+  commitMessage: string,
+  submodule?: string
 ) => {
   const asyncExec = promisify(exec);
+  if (submodule) {
+    await asyncExec(`cd ${submodule}`);
+  }
   await asyncExec(`git config --global user.name ${username}`);
   await asyncExec(`git config --global user.email ${email}`);
   await asyncExec(`git checkout -b ${branchName}`);
